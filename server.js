@@ -17,8 +17,14 @@ app.get('/', (req, res) => {
 // Прокси для загрузки страниц
 app.get('/proxy', async (req, res) => {
     const { url } = req.query;
+    if (!url) {
+        return res.status(400).send('URL is required');
+    }
+
     try {
-        const response = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+        const response = await axios.get(url, {
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        });
         res.send(response.data);
     } catch (error) {
         res.status(500).send('Error fetching content');
