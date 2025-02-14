@@ -1,11 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Отдаём index.html при заходе на сайт
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Прокси для загрузки страниц
 app.get('/proxy', async (req, res) => {
     const { url } = req.query;
     try {
